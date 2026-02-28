@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clean Madurai 2.0 | Public Grievance Management</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Outfit:wght@400;600;800&display=swap');
+
+        :root {
+            --primary: #2ecc71;
+            /* Leaf Green */
+            --secondary: #0a1f11;
+            /* Forest Dark */
+            --accent: #27ae60;
+            /* Deep Green Accent */
+            --text-light: #e8f5e9;
+            /* Light Mint Text */
+            --text-muted: #81c784;
+            /* Soft Green Text */
+            --bg-glass: rgba(10, 31, 17, 0.7);
+            --border-glass: rgba(46, 204, 113, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--secondary);
+            background-image:
+                radial-gradient(circle at 10% 10%, rgba(46, 204, 113, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 90% 90%, rgba(39, 174, 96, 0.15) 0%, transparent 50%),
+                url('https://images.unsplash.com/photo-1448375240586-882707db888b?q=80&w=2070&auto=format&fit=crop');
+            /* Subtle forest background */
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-blend-mode: overlay;
+            color: var(--text-light);
+            min-height: 100vh;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bg-glass);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-glass);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            font-size: 1.5rem;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo span {
+            color: var(--accent);
+        }
+
+        .auth-container {
+            max-width: 400px;
+            margin: 4rem auto;
+            padding: 2.5rem;
+            background: var(--bg-glass);
+            border: 1px solid var(--border-glass);
+            border-radius: 20px;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        h2 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-glass);
+            border-radius: 10px;
+            color: #fff;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        input:focus {
+            border-color: var(--primary);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 1rem;
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 1rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: var(--secondary);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(46, 204, 113, 0.4);
+        }
+
+        .dashboard {
+            display: none;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .card {
+            background: var(--bg-glass);
+            padding: 2rem;
+            border-radius: 20px;
+            border: 1px solid var(--border-glass);
+            transition: transform 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .category-item {
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            /* Slightly lighter for contrast against dark forest */
+            border-radius: 15px;
+            text-align: center;
+            cursor: pointer;
+            border: 1px solid transparent;
+            backdrop-filter: blur(5px);
+        }
+
+        .category-item:hover {
+            border-color: var(--primary);
+            background: rgba(46, 204, 113, 0.1);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate {
+            animation: fadeIn 0.5s forwards;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="logo">Clean<span>Madurai 2.0</span></div>
+        <div id="user-info"></div>
+    </header>
+
+    <!-- Authentication Screen -->
+    <div class="auth-container animate" id="auth-screen">
+        <h2>Welcome Back</h2>
+        <div class="form-group">
+            <label>Login As</label>
+            <select id="user-role">
+                <option value="citizen">public user</option>
+                <option value="officer">corporation office</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Username</label>
+            <input type="text" placeholder="Enter your username">
+        </div>
+        <div class="form-group">
+            <label>Password</label>
+            <input type="password" placeholder="••••••••">
+        </div>
+        <button class="btn btn-primary" onclick="login()">Login to Dashboard</button>
+    </div>
+
+    <!-- Profile Setup Screen -->
+    <div class="auth-container animate" id="profile-setup-screen" style="display: none; max-width: 500px;">
+        <h2>Complete Your Profile</h2>
+        <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" id="prof-name" placeholder="John Doe">
+        </div>
+        <div class="form-group">
+            <label>Email ID</label>
+            <input type="email" id="prof-email" placeholder="john@example.com">
+        </div>
+        <div class="form-group">
+            <label>Contact No</label>
+            <input type="tel" id="prof-contact" placeholder="9876543210">
+        </div>
+        <div class="form-group">
+            <label>Address</label>
+            <input type="text" id="prof-address" placeholder="123 Main St">
+        </div>
+        <div class="form-group">
+            <label>Pincode</label>
+            <input type="text" id="prof-pincode" placeholder="625001">
+        </div>
+        <button class="btn btn-primary" onclick="saveProfile()">Save & Continue</button>
+    </div>
+
+    <!-- Profile Details Modal -->
+    <div id="profile-modal" class="animate"
+        style="display: none; position: fixed; top: 80px; right: 2rem; background: var(--bg-glass); border: 1px solid var(--border-glass); padding: 1.5rem; border-radius: 15px; backdrop-filter: blur(15px); z-index: 200; box-shadow: 0 10px 30px rgba(0,0,0,0.5); min-width: 280px;">
+        <div
+            style="text-align: center; margin-bottom: 1rem; border-bottom: 1px solid var(--border-glass); padding-bottom: 1rem;">
+            <img src="" id="modal-avatar"
+                style="width: 64px; height: 64px; border-radius: 50%; margin-bottom: 0.5rem; border: 2px solid var(--primary);">
+            <h3 id="modal-name">User Name</h3>
+            <span style="color: var(--primary); font-size: 0.85rem; font-weight: 600;" id="modal-role">Role</span>
+        </div>
+        <div style="font-size: 0.9rem; color: var(--text-light); line-height: 1.8;">
+            <div style="display: flex; justify-content: space-between;"><strong>Email:</strong> <span id="modal-email"
+                    style="color: var(--text-muted);"></span></div>
+            <div style="display: flex; justify-content: space-between;"><strong>Contact:</strong> <span
+                    id="modal-contact" style="color: var(--text-muted);"></span></div>
+            <div style="display: flex; justify-content: space-between;"><strong>Address:</strong> <span
+                    id="modal-address" style="color: var(--text-muted);"></span></div>
+            <div style="display: flex; justify-content: space-between;"><strong>Pincode:</strong> <span
+                    id="modal-pincode" style="color: var(--text-muted);"></span></div>
+        </div>
+        <button class="btn btn-primary" style="padding: 0.8rem; margin-top: 1.5rem;" onclick="logout()">Logout</button>
+    </div>
+
+    <!-- Citizen Dashboard -->
+    <div class="dashboard animate" id="citizen-dashboard">
+        <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+            <h2>Citizen Dashboard</h2>
+            <div style="margin-bottom: 1.5rem; color: var(--accent); font-weight: 600;">Social Rank: Civic Hero (#42)
+            </div>
+        </div>
+        <div class="grid">
+            <div class="card">
+                <h3>Raise a Complaint</h3>
+                <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Select a category to report an issue.
+                </p>
+                <div class="category-grid">
+                    <div class="category-item" onclick="openComplaintForm('Garbage')">🗑️ <br>Garbage</div>
+                    <div class="category-item" onclick="openComplaintForm('Drainage')">💧 <br>Drainage</div>
+                    <div class="category-item" onclick="openComplaintForm('Sanitation')">🧼 <br>Sanitation</div>
+                    <div class="category-item" onclick="openComplaintForm('Others')">🏗️ <br>Others</div>
+                </div>
+            </div>
+            <div class="card">
+                <h3>My Complaints</h3>
+                <div id="complaint-list" style="margin-top: 1rem;">
+                    <!-- Dynamically rendered citizen complaints -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Complaint Form Screen -->
+    <div class="dashboard animate" id="complaint-form-screen">
+        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem;">
+            <button onclick="showDashboard('citizen')"
+                style="background: none; border: 1px solid var(--border-glass); color: white; padding: 0.5rem; border-radius: 50%; cursor: pointer; width: 40px; height: 40px;">←</button>
+            <h2 id="form-title" style="margin-bottom: 0;">Report Issue</h2>
+        </div>
+
+        <div class="card" style="max-width: 600px; margin: 0 auto;">
+            <div class="form-group">
+                <label>Upload Photo (Mandatory)</label>
+                <div id="photo-placeholder"
+                    style="width: 100%; height: 200px; background: rgba(255,255,255,0.05); border: 2px dashed var(--border-glass); border-radius: 15px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer;"
+                    onclick="simulateCamera()">
+                    <span style="font-size: 2rem;">📸</span>
+                    <p style="color: var(--text-muted); margin-top: 0.5rem;">Click to take/upload photo</p>
+                </div>
+                <img id="captured-photo" style="width: 100%; border-radius: 15px; display: none; margin-top: 10px;">
+            </div>
+
+            <div class="form-group">
+                <label>Location</label>
+                <div style="display: flex; gap: 0.5rem;">
+                    <input type="text" id="location-bar" placeholder="Fetching GPS location..." readonly>
+                    <button class="btn-primary" style="width: auto; padding: 0.5rem 1rem; border-radius: 10px;"
+                        onclick="getLocation()">📍</button>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Description</label>
+                <textarea id="issue-description"
+                    style="width: 100%; padding: 1rem; background: rgba(255,255,255,0.05); border: 1px solid var(--border-glass); border-radius: 10px; color: white; min-height: 100px;"
+                    placeholder="Describe the problem details..."></textarea>
+            </div>
+
+            <button class="btn btn-primary" onclick="submitComplaint()">Submit Problem</button>
+        </div>
+    </div>
+
+    <!-- Officer Dashboard -->
+    <div class="dashboard animate" id="officer-dashboard">
+        <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+            <h2>Officer Management Hub</h2>
+            <button class="btn-primary" style="padding: 0.5rem 1rem; border-radius: 8px; border: none; cursor: pointer;"
+                onclick="logout()">Logout</button>
+        </div>
+
+        <div class="grid">
+            <div class="card">
+                <div class="stat-number" id="stat-pending">0</div>
+                <label>Pending Complaints</label>
+            </div>
+            <div class="card">
+                <div class="stat-number" id="stat-progress" style="color: orange;">0</div>
+                <label>In Progress</label>
+            </div>
+            <div class="card">
+                <div class="stat-number" id="stat-resolved" style="color: var(--accent);">0</div>
+                <label>Resolved</label>
+            </div>
+        </div>
+
+        <div class="card" style="margin-top: 2rem;">
+            <h3>Active Complaints Feed</h3>
+            <div id="officer-feed"
+                style="margin-top: 1rem; border-top: 1px solid var(--border-glass); padding-top: 1rem;">
+                <!-- Dynamically rendered officer complaints -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentCategory = '';
+        let userData = {};
+
+        // Simulating a Database
+        let globalComplaints = [];
+
+        function login() {
+            const role = document.getElementById('user-role').value;
+            userData.role = role;
+            document.getElementById('auth-screen').style.display = 'none';
+            document.getElementById('profile-setup-screen').style.display = 'block';
+        }
+
+        function saveProfile() {
+            userData.name = document.getElementById('prof-name').value || 'John Doe';
+            userData.email = document.getElementById('prof-email').value || 'john@example.com';
+            userData.contact = document.getElementById('prof-contact').value || '9876543210';
+            userData.address = document.getElementById('prof-address').value || 'Madurai City';
+            userData.pincode = document.getElementById('prof-pincode').value || '625001';
+
+            document.getElementById('profile-setup-screen').style.display = 'none';
+
+            // Setup User Avatar (Profile Logo) using initials with green theme
+            const userInfo = document.getElementById('user-info');
+            const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(userData.name)}&background=2ecc71&color=0a1f11&bold=true`;
+            userInfo.innerHTML = `<img src="${avatarUrl}" style="width: 45px; height: 45px; border-radius: 50%; cursor: pointer; border: 2px solid var(--primary); transition: transform 0.2s;" onclick="toggleProfileModal()" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">`;
+
+            // Populate Modal
+            document.getElementById('modal-avatar').src = avatarUrl;
+            document.getElementById('modal-name').innerText = userData.name;
+            document.getElementById('modal-role').innerText = userData.role === 'citizen' ? 'Public User' : 'Corporation Officer';
+            document.getElementById('modal-email').innerText = userData.email;
+            document.getElementById('modal-contact').innerText = userData.contact;
+            document.getElementById('modal-address').innerText = userData.address;
+            document.getElementById('modal-pincode').innerText = userData.pincode;
+
+            showDashboard(userData.role);
+        }
+
+        function toggleProfileModal() {
+            const modal = document.getElementById('profile-modal');
+            modal.style.display = modal.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function logout() {
+            document.getElementById('profile-modal').style.display = 'none';
+            document.getElementById('user-info').innerHTML = '';
+            document.getElementById('citizen-dashboard').style.display = 'none';
+            document.getElementById('officer-dashboard').style.display = 'none';
+            document.getElementById('complaint-form-screen').style.display = 'none';
+            document.getElementById('auth-screen').style.display = 'block';
+            userData = {};
+        }
+
+        function showDashboard(role) {
+            document.getElementById('auth-screen').style.display = 'none';
+            document.getElementById('profile-setup-screen').style.display = 'none';
+            document.getElementById('complaint-form-screen').style.display = 'none';
+
+            if (role === 'citizen') {
+                document.getElementById('citizen-dashboard').style.display = 'block';
+                document.getElementById('officer-dashboard').style.display = 'none';
+                renderCitizenComplaints();
+            } else {
+                document.getElementById('citizen-dashboard').style.display = 'none';
+                document.getElementById('officer-dashboard').style.display = 'block';
+                renderOfficerDashboard();
+            }
+        }
+
+        function openComplaintForm(category) {
+            currentCategory = category;
+            document.getElementById('form-title').innerText = `Report ${category} Issue`;
+            document.getElementById('citizen-dashboard').style.display = 'none';
+            document.getElementById('complaint-form-screen').style.display = 'block';
+
+            // Reset form
+            document.getElementById('photo-placeholder').style.display = 'flex';
+            document.getElementById('captured-photo').style.display = 'none';
+            document.getElementById('location-bar').value = '';
+            document.getElementById('issue-description').value = '';
+        }
+
+        function simulateCamera() {
+            alert("Simulating Camera Access...");
+            document.getElementById('photo-placeholder').style.display = 'none';
+            const img = document.getElementById('captured-photo');
+            img.src = 'https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=1000&auto=format&fit=crop';
+            img.style.display = 'block';
+        }
+
+        function getLocation() {
+            document.getElementById('location-bar').value = 'Madurai, Tamil Nadu (12.91° N, 78.12° E)';
+        }
+
+        function submitComplaint() {
+            const desc = document.getElementById('issue-description').value;
+            const loc = document.getElementById('location-bar').value;
+            const img = document.getElementById('captured-photo');
+
+            if (!desc || !loc || img.style.display === 'none') {
+                alert("Please complete all mandatory fields (Photo, Location, Description).");
+                return;
+            }
+
+            const newComplaint = {
+                id: 'CM-' + Math.floor(1000 + Math.random() * 9000),
+                category: currentCategory,
+                status: 'Submitted',
+                desc: desc,
+                location: loc,
+                imgUrl: img.src,
+                time: new Date().toLocaleTimeString(),
+                user: userData
+            };
+
+            globalComplaints.unshift(newComplaint); // Add exactly to top of global list
+            alert(`${currentCategory} issue submitted successfully! Clean Madurai 2.0 team is on it.`);
+            showDashboard('citizen');
+        }
+
+        // --- Render Logic ---
+
+        function getStatusColor(status) {
+            if (status === 'Submitted') return '#2ecc71'; // primary leaf green
+            if (status === 'In Progress') return 'orange';
+            if (status === 'Resolved') return '#27ae60'; // accent deep green
+            return 'white';
+        }
+
+        function renderCitizenComplaints() {
+            const list = document.getElementById('complaint-list');
+            list.innerHTML = '';
+
+            if (globalComplaints.length === 0) {
+                list.innerHTML = '<p style="color: var(--text-muted);">No complaints raised yet.</p>';
+                return;
+            }
+
+            globalComplaints.forEach(c => {
+                list.innerHTML += `
+                    <div style="padding: 1rem; background: rgba(255,255,255,0.05); border-radius: 10px; margin-bottom: 1rem; border-left: 4px solid ${getStatusColor(c.status)};">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <strong>${c.category} Issue <span style="font-size: 0.8em; color: var(--text-muted);">(${c.id})</span></strong>
+                            <span style="color: ${getStatusColor(c.status)}; font-weight: bold; display: flex; align-items: center; gap: 0.5rem;">
+                                ${c.status === 'Submitted' ? '📤' : c.status === 'In Progress' ? '⏳' : '✅'} ${c.status}
+                            </span>
+                        </div>
+                        <small style="color: var(--text-muted);">${c.time} - ${c.location.split(',')[0]}<span style="display: block; margin-top: 0.5rem; font-style: italic;">"${c.desc}"</span></small>
+                    </div>
+                `;
+            });
+        }
+
+        function renderOfficerDashboard() {
+            // Update Stats
+            document.getElementById('stat-pending').innerText = globalComplaints.filter(c => c.status === 'Submitted').length;
+            document.getElementById('stat-progress').innerText = globalComplaints.filter(c => c.status === 'In Progress').length;
+            document.getElementById('stat-resolved').innerText = globalComplaints.filter(c => c.status === 'Resolved').length;
+
+            const feed = document.getElementById('officer-feed');
+            feed.innerHTML = '';
+
+            if (globalComplaints.length === 0) {
+                feed.innerHTML = '<p style="color: var(--text-muted); text-align: center; padding: 2rem;">No active complaints in the system.</p>';
+                return;
+            }
+
+            globalComplaints.forEach(c => {
+                let actionButton = '';
+                if (c.status === 'Submitted') {
+                    actionButton = `
+                        <button style="background: var(--primary); color: #000; border: none; padding: 0.5rem 1rem; border-radius: 5px; cursor: pointer; font-weight: bold; margin-right: 0.5rem;" onclick="updateComplaintStatus('${c.id}', 'In Progress')">Accept</button>
+                        <button style="background: transparent; color: #ff4d4d; border: 1px solid #ff4d4d; padding: 0.5rem 1rem; border-radius: 5px; cursor: pointer;" onclick="updateComplaintStatus('${c.id}', 'Declined')">Decline</button>
+                    `;
+                } else if (c.status === 'In Progress') {
+                    actionButton = `
+                        <button style="background: var(--accent); color: #000; border: none; padding: 0.5rem 1rem; border-radius: 5px; cursor: pointer; font-weight: bold; display: flex; align-items: center; gap: 0.5rem;" onclick="updateComplaintStatus('${c.id}', 'Resolved')">
+                            🏁 Mark as Finished
+                        </button>
+                    `;
+                }
+
+                feed.innerHTML += `
+                    <div style="display: flex; gap: 1.5rem; align-items: flex-start; padding: 1.5rem; background: rgba(0,0,0,0.2); border-radius: 15px; margin-bottom: 1.5rem; border-left: 5px solid ${getStatusColor(c.status)}">
+                        <img src="${c.imgUrl}" style="width: 100px; height: 100px; object-fit: cover; border-radius: 10px; border: 1px solid var(--border-glass);">
+                        <div style="flex: 1;">
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                                <div>
+                                    <h4 style="color: var(--text-light); margin-bottom: 0.2rem;">${c.category} <span style="color: ${getStatusColor(c.status)}; margin-left: 0.5rem;">[${c.status}]</span></h4>
+                                    <small style="color: var(--primary); font-family: monospace;">ID: ${c.id}</small>
+                                </div>
+                                <div style="display: flex;">
+                                    ${actionButton}
+                                </div>
+                            </div>
+                            
+                            <p style="color: var(--text-light); font-size: 0.95rem; margin: 1rem 0; padding: 1rem; background: rgba(255,255,255,0.05); border-radius: 8px;">"${c.desc}"</p>
+                            
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; font-size: 0.85rem; color: var(--text-muted);">
+                                <div><strong>📍 Location:</strong><br>${c.location}</div>
+                                <div><strong>👤 Reporter:</strong><br>${c.user.name} (${c.user.contact})</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function updateComplaintStatus(id, newStatus) {
+            const complaint = globalComplaints.find(c => c.id === id);
+            if (complaint) {
+                complaint.status = newStatus;
+                if (newStatus === 'Declined') {
+                    alert("Complaint declined.");
+                    globalComplaints = globalComplaints.filter(c => c.id !== id);
+                }
+                renderOfficerDashboard();
+            }
+        }
+    </script>
+</body>
+
+</html>
